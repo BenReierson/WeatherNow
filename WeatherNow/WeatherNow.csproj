@@ -19,12 +19,13 @@
     <LangVersion>latestmajor</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.530" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.617" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\" />
     <Folder Include="Views\" />
+    <Folder Include="Themes\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WeatherNow.Data\WeatherNow.Data.csproj" />

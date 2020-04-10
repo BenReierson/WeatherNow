@@ -1,12 +1,73 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             x:Class="WeatherNow.Views.MainPage">
-    <StackLayout>
-        <!-- Place new controls here -->
-        <Label Text="Welcome to Xamarin.Forms!" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
-    </StackLayout>
-</ContentPage>
+<p:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                   xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                   xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:p="clr-namespace:WeatherNow.Views"
+                   xmlns:vm="clr-namespace:WeatherNow.ViewModels"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   BackgroundColor="{DynamicResource WindowBackgroundColor}"
+                   ios:Page.UseSafeArea="true"
+                   mc:Ignorable="d"
+                   x:Class="WeatherNow.Views.MainPage"
+                   x:TypeArguments="vm:MainViewModel">
+  <RefreshView BackgroundColor="{DynamicResource WindowBackgroundColor}"
+               Command="{Binding RefreshCurrentWeatherCommand}"
+               IsRefreshing="{Binding IsBusy}"
+               RefreshColor="{DynamicResource AccentColor}">
+    <ScrollView>
+      <Grid Padding="24,0">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="Auto"/>
+          <RowDefinition Height="*"/>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label FontAttributes="Bold"
+               FontSize="44"
+               Style="{StaticResource CenterLabelStyle}"
+               Text="WEATHER NOW"/>
+        <StackLayout Grid.Row="1"
+                     IsVisible="{Binding IsNotBusy}">
+          <Label Style="{StaticResource CenterLabelStyle}"
+                 Text="in"/>
+          <Label FontSize="Title"
+                 Style="{StaticResource CenterLabelStyle}"
+                 Text="{Binding CurrentWeather.Timezone}"/>
+        </StackLayout>
+        <Label Grid.Row="2"
+               Style="{StaticResource CenterLabelStyle}"
+               Text="{Binding Error}"
+               TextColor="{DynamicResource ErrorTextColor}"/>
+        <StackLayout Grid.Row="3"
+                     IsVisible="{Binding IsNotBusy}"
+                     VerticalOptions="Center">
+          <Label FontAttributes="Bold"
+                 FontSize="38"
+                 Style="{StaticResource CenterLabelStyle}"
+                 Text="{Binding CurrentWeather.Current.Temp, StringFormat='{0} °C'}"/>
+          <Label Style="{StaticResource CenterLabelStyle}"
+                 Text="{Binding CurrentWeather.Current.Weather[0].Description}"/>
+          <Image HeightRequest="100"
+                 Source="{Binding CurrentWeather.Current.Weather[0].IconImage}"
+                 WidthRequest="100"/>
+        </StackLayout>
+        <ActivityIndicator Color="{DynamicResource AccentColor}"
+                           Grid.Row="2"
+                           HorizontalOptions="Center"
+                           IsRunning="{Binding IsBusy}"
+                           IsVisible="{Binding IsBusy}"
+                           VerticalOptions="Center"/>
+        <Button BackgroundColor="Transparent"
+                Command="{Binding ToggleThemeCommand}"
+                Grid.Row="4"
+                HorizontalOptions="Fill"
+                Text="TOGGLE THEME"
+                TextColor="{DynamicResource AccentColor}"
+                VerticalOptions="End"
+                Visual="Material"/>
+      </Grid>
+    </ScrollView>
+  </RefreshView>
+</p:BaseContentPage>
